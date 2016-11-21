@@ -44,3 +44,7 @@ class Companies(db.Model):
     @staticmethod
     def get_id(company_name):
         return Companies.query.filter_by(company_name=company_name).first().company_id
+
+    @staticmethod
+    def get_count():
+        return db.session.query(Companies).count()

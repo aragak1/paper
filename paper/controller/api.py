@@ -10,7 +10,8 @@ from flask import jsonify
 
 @app.route('/api/companies', methods=['GET'])
 def get_all_companies():
-    return jsonify(row_convert(Companies.get_all_companies()))
+    return jsonify({'companies': row_convert(Companies.get_all_companies()),
+                    'count': Companies.get_count()})
 
 
 @app.route('/api/company/<int:company_id>', methods=['GET'])
@@ -38,7 +39,13 @@ def get_answer(question_id):
     return jsonify(Questions.get_answer(question_id=question_id))
 
 
+@app.route('/api/papers', methods=['GET'])
+def get_all_paper():
+    return jsonify({'papers': row_convert(Papers.get_all_paper()),
+                    'count': Papers.get_count()})
+
+
 @app.route('/test')
 def test():
-    # add_papers('/home/terry/PycharmProjects/paper/paper/papers')
+    add_papers('../papers')
     return 'done'

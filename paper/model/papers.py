@@ -33,6 +33,13 @@ class Papers(db.Model):
     def existed(paper_name):
         return True if Papers.query.filter_by(paper_name=paper_name).count() else False
 
+    @staticmethod
+    def get_all_paper():
+        return Papers.query.all()
+
+    @staticmethod
+    def get_count():
+        return db.session.query(Papers).count()
 
 
 
