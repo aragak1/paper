@@ -13,4 +13,5 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:253014@localhost:3306/pape
 db = SQLAlchemy(app)
 
 import paper.controller.index
+import paper.controller.user
 import paper.controller.api
