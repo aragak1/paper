@@ -5,6 +5,7 @@ from ..model.companies import Companies
 from ..model.papers import Papers
 from ..model.questions import Questions
 from ..model.options import Options
+import re
 
 
 QUESTION_TYPE = {
@@ -65,5 +66,11 @@ def add_papers(path):
     for f in os.listdir(path):
         if os.path.isfile(path + '/' + f):
             add_paper_from_file(path + '/' + f)
+
+
+def valid_email(email):
+    if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email):
+        return True
+    return False
 
 
