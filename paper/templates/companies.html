@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <link href="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bg {
+            background: url(/static/img/pic.png) no-repeat center fixed;
+            background-size: contain
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                            class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="#">Paper</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="#">Link</a>
+                        </li>
+                        <li>
+                            <a href="#">Link</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong
+                                    class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">Separated link</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">One more separated link</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control"/>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">Link</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong
+                                    class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">Separated link</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+            <div class="jumbotron">
+
+                <h1>
+                    在线题库!
+                </h1>
+                <p>
+                    选择你需要的题库进行测试。
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-large" href="#">Learn more</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <img src="/static/img/pic.png">
+    </div>
+    <div id="show_area">
+
+    </div>
+</div>
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+
+<script>
+    (function ($) {
+        $.fn.getContent = function (content) {
+            if (content.items == null) {
+                $(this).html('<div class=""><h2>没有相关试题</h2></div>');
+                return;
+            }
+            var superContainer = $(this)
+            var size = 6;
+            var Num = content.items.length;
+            if (Num > size) {
+                var pageNum = Math.ceil(Num / size);
+            } else {
+                pageNum = 1;
+            }
+            var showPage = 0;
+            var index;
+            var contentL = '<ul class="items"> <li class="item">	<div class="row clearfix"> ';
+            var pagination = '<div class="col-md-3 column"></div><div class="col-md-6 column"><ul class="pagination pagination-lg"><li class="prev"><a >Prev</a></li>';
+            for (index = 0; index < Num; index++) {
+                if (index % size == 0 && index != 0) {
+                    contentL += '</div> </li> <li class="item"> <div class="row clearfix">';
+                }
+                contentL += '<div class="col-md-4 column"> <h2>' + content.items[index].name + '</h2> <p>' + content.items[index].item + '</p> <img  src="' + content.items[index].img + '"  /> <p> <a class="btn" href="' + content.items[index].href + '">开始做题 »</a> </p> </div>';
+                if (index == Num - 1) {
+                    contentL += '</div> </li></ul>';
+                }
+            }
+            for (var i = 0; i < pageNum; i++) {
+                pagination += '<li  id="' + i + '" class="num"><a >' + (i + 1) + '</a></li>'
+                if (i == pageNum - 1) {
+                    pagination += '<li class="next"><a>Next</a></li></ul></div><div class="col-md-3 column"></div>';
+                }
+            }
+            superContainer.html(contentL + pagination);
+
+            var page = superContainer.find('.item');
+            var bar = superContainer.find('.pagination');
+            bar.hide();
+            page.hide();
+            page.first().fadeIn(500);
+            bar.fadeIn(500);
+            superContainer.find('.prev').click(function () {
+                if (showPage == 0) {
+                    return;
+                }
+                page.eq(showPage).hide()
+                showPage--;
+                page.eq(showPage).fadeIn(500);
+            });
+            superContainer.find('.next').click(function () {
+                if (showPage == pageNum - 1) {
+                    return;
+                }
+                page.eq(showPage).hide();
+                showPage++;
+                page.eq(showPage).fadeIn(500);
+            });
+
+            superContainer.find('.num').on('click', function () {
+
+                var _id = $(this).attr('id');
+                var i = parseInt(_id);
+                page.eq(showPage).hide();
+                showPage = i;
+                page.eq(showPage).fadeIn(500);
+            });
+
+
+        }
+
+    })(jQuery);
+</script>
+<script>
+    var ini = {
+        'items': [{'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
+            'name': '腾讯',
+            'item': '2016腾讯招聘试题',
+            'img': '/static/img/pic5.png',
+            'href': ' '
+        }, {'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
+            'name': '腾讯',
+            'item': '2016腾讯招聘试题',
+            'img': '/static/img/pic5.png',
+            'href': ' '
+        }, {'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
+            'name': '腾讯',
+            'item': '2016腾讯招聘试题',
+            'img': '/static/img/pic5.png',
+            'href': ' '
+        }, {'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
+            'name': '腾讯',
+            'item': '2016腾讯招聘试题',
+            'img': '/static/img/pic5.png',
+            'href': ' '
+        }, {'name': '百度', 'item': '2016百度招聘试题', 'img': '/static/img/pic2.png', 'href': ''}, {
+            'name': '360',
+            'item': '2016 360招聘试题',
+            'img': '/static/img/pic4.png',
+            'href': ''
+        }]
+    };
+
+    $(function () {
+
+        $('#show_area').getContent(ini);
+    });
+
+</script>
+</body>
+</html>

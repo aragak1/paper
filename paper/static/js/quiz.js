@@ -2,7 +2,7 @@
     $.fn.jquizzy = function(settings) {
         var defaults = {
             questions: null,
-            startImg: 'img/start.gif',
+            startImg: '/static/img/start.gif',
             endText: '已结束!',
             shortURL: null,
             sendResultsURL: null,

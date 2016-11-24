@@ -13,6 +13,6 @@ app.secret_key = 'mC\xf1_\x07`c\xc0\xbcu/WNP\xc6$\x96\xd4r\xc4&\x99\xf1X'
 
 db = SQLAlchemy(app)
 
-import paper.controller.index
+import paper.controller.front
 import paper.controller.user
 import paper.controller.api
