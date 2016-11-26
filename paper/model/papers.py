@@ -41,5 +41,9 @@ class Papers(db.Model):
     def get_count():
         return db.session.query(Papers).count()
 
+    @staticmethod
+    def get_company_papers(company_id):
+        return Papers.query.filter_by(company_id=company_id).all()
+
 
 

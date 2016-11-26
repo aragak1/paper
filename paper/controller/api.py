@@ -19,8 +19,14 @@ def get_company(company_id):
     return jsonify(row_convert(Companies.get_company(company_id)))
 
 
+@app.route('/api/papers/companies/<int:company_id>')
+def get_company_papers(company_id):
+    return jsonify({'items': row_convert(Papers.get_company_papers(company_id))})
+
+
 @app.route('/api/papers/<int:paper_id>')
 def get_paper(paper_id):
+    d = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
     data = {}
 
     paper = row_convert(Papers.get_paper(paper_id=paper_id))
@@ -28,10 +34,20 @@ def get_paper(paper_id):
     data['company_name'] = Companies.get_company_name(paper['company_id'])
 
     questions = row_convert(Questions.get_questions(paper_id=paper_id))
+    questions = [q for q in questions if q['ques_type'] == '1']
     for question in questions:
         question['options'] = row_convert(Options.get_options(question_id=question['question_id']))
 
-    return jsonify(questions)
+    # 修改成前端所需的数据格式
+    for question in questions:
+        question.update(question=question.pop('content'))
+        question.update(correctAnswer=d[question.pop('answer')])
+        question['answers'] = []
+        for option in question['options']:
+            question['answers'].append(option['content'])
+        question.pop('options')
+
+    return jsonify({'questions': questions})
 
 
 @app.route('/api/answer/<int:question_id>')

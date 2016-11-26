@@ -119,6 +119,10 @@
 <script>
     (function ($) {
         $.fn.getContent = function (content) {
+            var company_id = {{ company_id}};
+            var company_pic = '{{ company_pic }}';
+            var company_name = '{{ company_name }}';
+
             if (content.items == null) {
                 $(this).html('<div class=""><h2>没有相关试题</h2></div>');
                 return;
@@ -139,7 +143,7 @@
                 if (index % size == 0 && index != 0) {
                     contentL += '</div> </li> <li class="item"> <div class="row clearfix">';
                 }
-                contentL += '<div class="col-md-4 column"> <h2>' + content.items[index].name + '</h2> <p>' + content.items[index].item + '</p> <img  src="' + content.items[index].img + '"  /> <p> <a class="btn" href="' + content.items[index].href + '">开始做题 »</a> </p> </div>';
+                contentL += '<div class="col-md-4 column"> <h2>' + company_name + '</h2> <p>' + content.items[index].paper_name + '</p> <img  src="' + company_pic + '"  /> <p> <a class="btn" href="/papers/' + content.items[index].paper_id + '">开始做题 »</a> </p> </div>';
                 if (index == Num - 1) {
                     contentL += '</div> </li></ul>';
                 }
@@ -183,45 +187,21 @@
                 showPage = i;
                 page.eq(showPage).fadeIn(500);
             });
-
-
         }
 
     })(jQuery);
 </script>
 <script>
-    var ini = {
-        'items': [{'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
-            'name': '腾讯',
-            'item': '2016腾讯招聘试题',
-            'img': '/static/img/pic5.png',
-            'href': ' '
-        }, {'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
-            'name': '腾讯',
-            'item': '2016腾讯招聘试题',
-            'img': '/static/img/pic5.png',
-            'href': ' '
-        }, {'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
-            'name': '腾讯',
-            'item': '2016腾讯招聘试题',
-            'img': '/static/img/pic5.png',
-            'href': ' '
-        }, {'name': '腾讯', 'item': '2016腾讯招聘试题', 'img': '/static/img/pic5.png', 'href': ' '}, {
-            'name': '腾讯',
-            'item': '2016腾讯招聘试题',
-            'img': '/static/img/pic5.png',
-            'href': ' '
-        }, {'name': '百度', 'item': '2016百度招聘试题', 'img': '/static/img/pic2.png', 'href': ''}, {
-            'name': '360',
-            'item': '2016 360招聘试题',
-            'img': '/static/img/pic4.png',
-            'href': ''
-        }]
-    };
-
     $(function () {
+        $.ajax({
+            url: '/api/papers/companies/{{company_id}}',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                $('#show_area').getContent(data);
+            }
+        })
 
-        $('#show_area').getContent(ini);
     });
 
 </script>
