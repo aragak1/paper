@@ -44,5 +44,9 @@ class Users(db.Model):
             return True if Users.query.filter_by(email=account).count() else False
         return True if Users.query.filter_by(username=account).count() else False
 
+    @staticmethod
+    def get_user(username):
+        return Users.query.filter_by(username=username).first()
+
 
 

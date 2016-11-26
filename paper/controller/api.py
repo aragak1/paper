@@ -26,7 +26,7 @@ def get_company_papers(company_id):
 
 @app.route('/api/papers/<int:paper_id>')
 def get_paper(paper_id):
-    d = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
+    d = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7}
     data = {}
 
     paper = row_convert(Papers.get_paper(paper_id=paper_id))
