@@ -33,9 +33,8 @@ def row_convert(rows):
         return {c.name: str(getattr(rows, c.name)) for c in rows.__table__.columns}
 
 
-def add_paper_from_file(path):
-    with open(path) as f:
-        paper = json.loads(f.read())
+def add_paper(paper_content):
+    paper = json.loads(paper_content)
 
     company_name = paper['company']
     paper_name = paper['name']
@@ -60,13 +59,6 @@ def add_paper_from_file(path):
                 Options.add_option(option_name=option['option_name'],
                                    content=option['content'],
                                    question_id=question_id)
-
-
-def add_papers(path):
-    for f in os.listdir(path):
-        if os.path.isfile(path + '/' + f):
-            add_paper_from_file(path + '/' + f)
-
 
 def valid_email(email):
     if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email):

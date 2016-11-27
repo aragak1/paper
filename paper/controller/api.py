@@ -4,8 +4,8 @@ from paper.model.companies import Companies
 from paper.model.papers import Papers
 from paper.model.questions import Questions
 from paper.model.options import Options
-from util import row_convert, add_papers
-from flask import jsonify
+from util import row_convert, add_paper
+from flask import jsonify, request
 
 
 @app.route('/api/companies')
@@ -61,7 +61,8 @@ def get_all_papers():
                     'count': Papers.get_count()})
 
 
-@app.route('/test')
-def test():
-    # add_papers('../papers')
+@app.route('/paper/add', methods=['POST'])
+def add_paper():
+    content = request.form.get('data')
+    add_paper(content)
     return 'done'
