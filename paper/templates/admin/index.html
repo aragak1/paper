@@ -1,4 +1,43 @@
 {% extends 'admin/master.html' %}
 {% block body %}
-    欢迎来到后台管理系统！
+    <h2>欢迎来到后台管理系统！</h2><br />
+    <h3>使用须知：</h3>
+    <p>请小心进行操作，尤其是删除数据，一切操作都是不可恢复的！</p><br />
+    <h4>如何修改公司的图片：</h4>
+    <p>在图片管理中上传公司的图片，然后在公司中修改图片路径即可，只需要修改/static/img/company/company.png中最后的company.png部分。</p><br />
+    <h4>如何添加管理员：</h4>
+    <p>不要在后台直接添加，在首页主页一个新的用户，然后把用户的admin字段改为1.</p><br />
+    <h4>如何添加试卷：</h4>
+    <p>请注意试卷的名称不能重复。</p>
+    <p>导入试卷的格式 （json）：</p>
+    <pre>
+{
+    "company": "公司名称",
+    "name": "试卷名称",
+    "content": [
+        {
+            "answer": "答案（A/B/C/D）",
+            "type": "单选",
+            "name": "问题的题干",
+            "options": [
+                {"option_name": "A", "content": "选项A的内容"},
+                {"option_name": "B", "content": "选项B的内容"},
+                {"option_name": "C", "content": "选项C的内容"},
+                {"option_name": "C", "content": "选项D的内容"} ……
+            ]
+        }，
+        {
+            "answer": "答案（A/B/C/D）",
+            "type": "单选",
+            "name": "问题的题干",
+            "options": [
+                {"option_name": "A", "content": "选项A的内容"},
+                {"option_name": "B", "content": "选项B的内容"},
+                {"option_name": "C", "content": "选项C的内容"},
+                {"option_name": "C", "content": "选项D的内容"} ……
+            ]
+        } ……
+    ]
+}
+    </pre>
 {% endblock %}

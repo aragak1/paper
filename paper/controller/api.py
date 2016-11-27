@@ -6,6 +6,7 @@ from paper.model.questions import Questions
 from paper.model.options import Options
 from util import row_convert, add_paper
 from flask import jsonify, request
+import json
 
 
 @app.route('/api/companies')
@@ -62,7 +63,17 @@ def get_all_papers():
 
 
 @app.route('/paper/add', methods=['POST'])
-def add_paper():
-    content = request.form.get('data')
+def import_paper():
+    try:
+        content = json.loads(request.form.get('paper'))
+    except ValueError:
+        return 'data_error'
+
+    try:
+        if Papers.existed(content['name']):
+            return 'existed'
+    except KeyError:
+            return 'error'
+
     add_paper(content)
-    return 'done'
+    return 'success'

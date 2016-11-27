@@ -1,6 +1,4 @@
 # -*- coding:utf8 -*-
-import os
-import json
 from ..model.companies import Companies
 from ..model.papers import Papers
 from ..model.questions import Questions
@@ -33,9 +31,7 @@ def row_convert(rows):
         return {c.name: str(getattr(rows, c.name)) for c in rows.__table__.columns}
 
 
-def add_paper(paper_content):
-    paper = json.loads(paper_content)
-
+def add_paper(paper):
     company_name = paper['company']
     paper_name = paper['name']
 

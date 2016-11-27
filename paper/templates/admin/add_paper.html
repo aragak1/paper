@@ -1,0 +1,32 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<p>请在下方的输入框中输入要导入的试卷json数据</p><br />
+<textarea style="height: 800px;width: 1155px;resize: none" id="content">
+</textarea>
+<button id="button">提交</button>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $(function () {
+        $('#button').click(function () {
+           $.post('/paper/add', {
+               'paper': $('#content').val()
+           }, function (result) {
+                if (result == 'data_error') {
+                    alert('数据格式错误！');
+                }
+                else if (result == 'success') {
+                    alert('添加成功！');
+                }
+                else if (result == 'existed')
+                {
+                    alert('添加失败，试卷存在！');
+                }
+                else
+                {
+                    alert('内部错误！');
+                }
+           })
+        });
+    });
+</script>
+{% endblock %}
