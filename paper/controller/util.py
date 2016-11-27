@@ -60,6 +60,7 @@ def add_paper(paper_content):
                                    content=option['content'],
                                    question_id=question_id)
 
+
 def valid_email(email):
     if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email):
         return True

@@ -17,7 +17,7 @@ create table companies(
   company_id int(11) unsigned not null auto_increment,
   company_name varchar(255) not null,
   introduction text,
-  picture varchar(255) not null default '/static/img/company.png',
+  picture varchar(255) not null default '/static/img/company/company.png',
   primary key (company_id)
 ) default charset=utf8;
 
@@ -48,4 +48,4 @@ create table options (
   primary key (option_id)
 ) default charset=utf8;
 
-insert into users(username, password, email) values('test', 'test', 'test@test.com');
+insert into users(username, password, email, admin) values('admin', '4da2379961eec3e436d7982310bd04df', 'admin@admin.com', 1);

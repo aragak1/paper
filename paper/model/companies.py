@@ -8,7 +8,7 @@ class Companies(db.Model):
     company_id = db.Column(db.Integer, primary_key=True)
     company_name = db.Column(db.String(255))
     introduction = db.Column(db.Text)
-    picture = db.Column(db.String(255), default='/static/img/company.png')
+    picture = db.Column(db.String(255), default='/static/img/company/company.png')
 
     @staticmethod
     def get_all_companies():
@@ -23,7 +23,7 @@ class Companies(db.Model):
         return Companies.query.filter_by(company_id=company_id).first().company_name
 
     @staticmethod
-    def add_company(company_name, introduction='introduction', picture='/static/img/company.png'):
+    def add_company(company_name, introduction='introduction', picture='/static/img/company/company.png'):
         if not Companies.query.filter_by(company_name=company_name).count():
             company = Companies(company_name=company_name, introduction=introduction, picture=picture)
             db.session.add(company)
