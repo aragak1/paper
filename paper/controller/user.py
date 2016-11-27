@@ -43,4 +43,6 @@ def register():
 def logout():
     if session.get('username'):
         session.pop('username')
+    if session.get('admin'):
+        session.pop('admin')
     return redirect('/')

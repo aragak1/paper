@@ -19,6 +19,26 @@ $(document).ready(function () {
             });
         }
     });
+    $('#admin_login').click(function () {
+        var username = $('input[name="username"]').val();
+        var password = $('input[name="password"]').val();
+        if (username == '' || password == '') {
+            alert('用户名和密码都不能为空！');
+        }
+        else {
+            $.post('/admin/login', {
+                'username': username,
+                'password': password
+            }, function (status) {
+                if (status == 'success') {
+                    location.href = '/admin';
+                }
+                else {
+                    alert('登陆失败');
+                }
+            });
+        }
+    });
     $('#register').click(function () {
         var username = $('input[name="username"]').val();
         var email = $('input[name="email"]').val();

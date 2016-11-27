@@ -17,7 +17,9 @@ class Users(db.Model):
 
     @staticmethod
     def __hash(password):
-        return md5(password + Users.__salt).hexdigest()
+        m = md5()
+        m.update(password)
+        return m.hexdigest()
 
     @staticmethod
     def add_user(username, password, email, status=1, admin=0, vip=0):
@@ -35,6 +37,14 @@ class Users(db.Model):
         users = Users.query.filter_by(username=username)
         if users.count():
             if users.first().password == Users.__hash(password + Users.__salt):
+                return True
+        return False
+
+    @staticmethod
+    def admin_valid(username, password):
+        users = Users.query.filter_by(username=username)
+        if users.count():
+            if users.first().password == Users.__hash(password + Users.__salt) and users.first().admin:
                 return True
         return False
 
