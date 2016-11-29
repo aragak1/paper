@@ -9,6 +9,7 @@ class Papers(db.Model):
     paper_id = db.Column(db.Integer, primary_key=True)
     company_id = db.Column(db.Integer, db.ForeignKey('companies.company_id'))
     paper_name = db.Column(db.String(255))
+    paper_year = db.Column(db.String(8))
 
     @staticmethod
     def get_paper(paper_id):
@@ -19,10 +20,10 @@ class Papers(db.Model):
         return Papers.query.filter_by(paper_name=paper_name).first().paper_id
 
     @staticmethod
-    def add_paper(company_name, paper_name):
+    def add_paper(company_name, paper_name, paper_year):
         if not Papers.query.filter_by(paper_name=paper_name).count():
             company_id = Companies.get_id(company_name)
-            paper = Papers(company_id=company_id, paper_name=paper_name)
+            paper = Papers(company_id=company_id, paper_name=paper_name, paper_year=paper_year)
             db.session.add(paper)
             db.session.flush()
             paper_id = paper.paper_id

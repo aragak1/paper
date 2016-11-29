@@ -24,7 +24,7 @@ def admin_login():
 class PaperAdminIndexView(AdminIndexView):
     @expose()
     def index(self):
-        if not session.get('admin'):
+        if not session.get('admin', None):
             return redirect('/admin/login')
         return self.render(self._template)
 
@@ -71,10 +71,11 @@ class PaperView(CommonView):
     can_create = False
 
     column_labels = {
-        'paper_name': '试卷名称'
+        'paper_name': '试卷名称',
+        'paper_year': '年份'
     }
 
-    column_list = ['paper_name']
+    column_list = ['paper_name', 'paper_year']
 
 
 class PaperAddView(BaseView):

@@ -25,6 +25,7 @@ create table papers(
   paper_id int(11) unsigned not null auto_increment,
   company_id int(11) unsigned not null,
   paper_name varchar(255) not null,
+  paper_year varchar(8) not null,
   constraint papers_company_id foreign key (company_id) references companies (company_id) on delete cascade on update cascade,
   primary key (paper_id)
 ) default charset=utf8;

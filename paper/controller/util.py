@@ -4,6 +4,8 @@ from ..model.papers import Papers
 from ..model.questions import Questions
 from ..model.options import Options
 import re
+import json
+import os
 
 
 QUESTION_TYPE = {
@@ -34,6 +36,7 @@ def row_convert(rows):
 def add_paper(paper):
     company_name = paper['company']
     paper_name = paper['name']
+    paper_year = paper['year']
 
     if Papers.existed(paper_name=paper_name):
         return
@@ -41,7 +44,7 @@ def add_paper(paper):
     # 添加公司
     Companies.add_company(company_name=company_name)
     # 添加试卷
-    paper_id = Papers.add_paper(company_name=company_name, paper_name=paper_name)
+    paper_id = Papers.add_paper(company_name=company_name, paper_name=paper_name, paper_year=paper_year)
 
     # 添加问题
     for question in paper['content']:
@@ -57,9 +60,18 @@ def add_paper(paper):
                                    question_id=question_id)
 
 
+def add_paper_from_dir(dir_path):
+    file_names = os.listdir(dir_path)
+    for filename in file_names:
+        path = os.path.join(dir_path, filename)
+        with open(path) as f:
+            data = json.loads(f.read())
+            print 'add paper %s' % data['name']
+            add_paper(data)
+
+
 def valid_email(email):
     if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email):
         return True
     return False
-
 
