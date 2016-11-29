@@ -64,6 +64,7 @@ class CompanyView(CommonView):
     }
 
     column_list = ['company_name', 'introduction', 'picture']
+    column_editable_list = ['company_name', 'introduction', 'picture']
 
 
 class PaperView(CommonView):

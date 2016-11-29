@@ -6,6 +6,7 @@
 <script type="text/javascript" src="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <style type="text/css">
 .bg{background:url(/static/img/pic.png) no-repeat center fixed;background-size:contain}
+#company-logo{width: 187px; height: 78px;}
 </style>
 </head>
 <body>
@@ -52,7 +53,7 @@
                             '<div class="col-md-4 column">' +
                             '<h2>' + data.companies[i].company_name + '</h2>' +
                             '<p>'+ data.companies[i].company_name+ '历年招聘试题</p>' +
-                            '<img  src="'+ data.companies[i].picture+ '" />' +
+                            '<img id="company-logo"  src="'+ data.companies[i].picture+ '" />' +
                             '<p><a class="btn" href="'+ '/companies/'+data.companies[i].company_id+ '">开始做题 »</a></p>' +
                             '</div>';
                     if ((i + 1) % 3 == 0) {
