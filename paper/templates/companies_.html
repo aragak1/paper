@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<link href="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+.bg{background:url(/static/img/pic.png) no-repeat center fixed;background-size:contain}
+#kuang{border:1px solid #F0F0F0}
+</style>
+
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			{% include 'navbar.html' %}
+			<div class="jumbotron" >
+				
+				<h1>
+					在线题库!
+				</h1>
+				<p>
+					选择你需要的题库进行测试。
+				</p>
+				<p>
+					 <a class="btn btn-primary btn-large" href="#">Learn more</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+	<img src="/static/img/pic.png">
+	</div>
+	<div class="row clearfix">
+	<div class="col-md-3 column" id="kuang">
+	<div class="column clearfix">
+	
+				
+</div>
+	</div>
+	<div class="col-md-9 column" id="kuang">
+	<div id="show_area" class="row clearfix">
+	</div>
+    </div>
+	</div>
+</div>
+
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+
+<script>
+(function($) {
+$.fn.getContent=function(content)
+{
+	var company_id = {{ company_id}};
+	var company_pic = '{{ company_pic }}';
+	var company_name = '{{ company_name }}';
+
+	if(content.items == null)
+	{
+		$(this).html('<div class=""><h2>没有相关试题</h2></div>');
+		return;
+	}
+	var superContainer = $(this)
+	var size = 6;
+	var Num = content.items.length;
+	if(Num>size){
+	var pageNum = Math.ceil(Num/size);
+	}else{pageNum =1;}
+	var showPage=0;
+	var page;
+	var bar;
+	var choice;
+	var pre;
+	var next;
+	var number;
+	var dropDown='<div class="col-md-9 column"></div><div class="col-md-3 column"><div class="btn-group"><button class="btn btn-default">年份</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu"><li><a class="choice">全部</a><li><a class="choice">2012</a></li><li><a class="choice">2013</a></li><li><a class="choice">2014</a></li><li><a class="choice">2015</a></li><li><a class="choice">2016</a></li></ul></div></div>';
+	var contentL='<ul class="items"> <li class="item">	<div class="row clearfix"> ';
+	var pagination='<div class="col-md-3 column"></div><div class="col-md-6 column"><ul class="pagination pagination-lg"><li class="prev"><a >Prev</a></li>';
+
+	function drawItems(Num,content){
+	for(var index = 0;index<Num;index++)
+	{
+		if(index%size==0&&index!=0)
+		{
+			contentL +='</div> </li> <li class="item"> <div class="row clearfix">';
+		}
+		contentL +='<div class="col-md-4 column"> <h2>'+ company_name + '</h2> <p>'+ content.items[index].paper_name + '</p> <img  src="' + company_pic + '"  /> <p> <a class="btn" href="/papers/' + content.items[index].paper_id +'">开始做题 »</a> </p> </div>';
+		if(index == Num-1)
+		{
+			contentL +='</div> </li></ul>';
+		}
+	}
+	}
+	function drawPagination(pageNum){
+	for(var i=0;i<pageNum;i++)
+	{
+		pagination +='<li  id="'+i+'" class="num"><a >'+(i+1)+'</a></li>'
+		if(i==pageNum-1)
+		{
+			pagination+='<li class="next"><a>Next</a></li></ul></div><div class="col-md-3 column"></div>';
+		}
+	}
+	}
+	drawItems(Num,content);
+	drawPagination(pageNum);
+	/////////////
+	superContainer.html(dropDown+contentL + pagination);
+	page=superContainer.find('.item');
+	bar=superContainer.find('.pagination');
+	bar.hide();
+	page.hide();
+
+	page.first().fadeIn(500);
+	bar.fadeIn(500);
+	////////////
+	pre=superContainer.find('.prev');
+	pre.click(function()
+	{
+		if(showPage==0)
+		{
+			return;
+		}
+		page.eq(showPage).hide()
+		showPage--;
+		page.eq(showPage).fadeIn(500);
+	});
+
+	next=superContainer.find('.next');
+	
+	next.click(function()
+	{
+		if(showPage==pageNum-1)
+		{	
+			return;
+		}
+		page.eq(showPage).hide();
+		showPage++;
+		page.eq(showPage).fadeIn(500);
+	});
+	
+	number=superContainer.find('.num');
+	number.on('click',function()
+	{
+		
+		var _id=$(this).attr('id');
+		var i=parseInt(_id);
+		page.eq(showPage).hide();
+		showPage=i;
+		page.eq(showPage).fadeIn(500);
+	});
+	
+	function getData(year)
+{
+	var items=[];
+	for(var i=0;i<content.items.length;i++)
+	{	
+			if(parseInt(content.items[i].paper_year)==year){
+			items=items.concat(content.items[i]);
+			}
+	}
+	var r={'items':items};
+	return r;
+}
+function refresh(condition)
+{
+	if(condition=="全部")
+	{
+		Num=content.items.length;
+		if(Num>size){
+			 var pageNum = Math.ceil(Num/size);
+					}
+		else{pageNum =1;}
+		var showPage=0;
+		contentL='<ul class="items"> <li class="item">	<div class="row clearfix"> ';
+		pagination='<div class="col-md-3 column"></div><div class="col-md-6 column"><ul class="pagination pagination-lg"><li class="prev"><a >Prev</a></li>';
+
+		drawItems(Num,content);
+		drawPagination(pageNum);
+		superContainer.empty();
+		superContainer.html(dropDown+contentL + pagination);
+		page=superContainer.find('.item');
+		bar=superContainer.find('.pagination');
+		bar.hide();
+	    page.hide();
+		page.first().fadeIn(500);
+		bar.fadeIn(500);
+		choice=superContainer.find('.choice');
+		pre=superContainer.find('.prev');
+		next=superContainer.find('.next');
+		number=superContainer.find('.num');
+				pre.click(function()
+	{
+		if(showPage==0)
+		{
+			return;
+		}
+		page.eq(showPage).hide()
+		showPage--;
+		page.eq(showPage).fadeIn(500);
+	});
+
+	next=superContainer.find('.next');
+	
+	next.click(function()
+	{
+		if(showPage==pageNum-1)
+		{	
+			return;
+		}
+		page.eq(showPage).hide();
+		showPage++;
+		page.eq(showPage).fadeIn(500);
+	});
+	
+	number=superContainer.find('.num');
+	number.on('click',function()
+	{
+		
+		var _id=$(this).attr('id');
+		var i=parseInt(_id);
+		page.eq(showPage).hide();
+		showPage=i;
+		page.eq(showPage).fadeIn(500);
+	});
+		choice.on('click',function()
+{	
+	var condition=$(this).html();
+
+	refresh(condition);
+	
+});
+	}else
+	{
+	var year=parseInt(condition)
+	var Ncontent=getData(year);
+	Num=Ncontent.items.length;
+	if(Num>size){
+			 var pageNum = Math.ceil(Num/size);
+					}
+		else{pageNum =1;}
+		var showPage=0;
+		contentL='<ul class="items"> <li class="item">	<div class="row clearfix"> ';
+		pagination='<div class="col-md-3 column"></div><div class="col-md-6 column"><ul class="pagination pagination-lg"><li class="prev"><a >Prev</a></li>';
+
+		drawItems(Num,Ncontent);
+		drawPagination(pageNum);
+		superContainer.empty();
+		superContainer.html(dropDown+contentL + pagination);
+		page=superContainer.find('.item');
+		bar=superContainer.find('.pagination');
+		page.hide();
+		bar.hide();
+		page.first().fadeIn(500);
+		bar.fadeIn(500);
+		choice=superContainer.find('.choice');
+		pre=superContainer.find('.prev');
+		next=superContainer.find('.next');
+		number=superContainer.find('.num');
+		pre.click(function()
+	{
+		if(showPage==0)
+		{
+			return;
+		}
+		page.eq(showPage).hide()
+		showPage--;
+		page.eq(showPage).fadeIn(500);
+	});
+
+	next=superContainer.find('.next');
+	
+	next.click(function()
+	{
+		if(showPage==pageNum-1)
+		{	
+			return;
+		}
+		page.eq(showPage).hide();
+		showPage++;
+		page.eq(showPage).fadeIn(500);
+	});
+	
+	number=superContainer.find('.num');
+	number.on('click',function()
+	{
+		
+		var _id=$(this).attr('id');
+		var i=parseInt(_id);
+		page.eq(showPage).hide();
+		showPage=i;
+		page.eq(showPage).fadeIn(500);
+	});
+		choice.on('click',function()
+{	
+	var condition=$(this).html();
+
+	refresh(condition);
+	
+});
+	
+}
+}
+choice=superContainer.find('.choice');
+choice.on('click',function()
+{	
+	var condition=$(this).html();
+
+	refresh(condition);
+	
+});
+	
+
+}
+
+
+	
+})(jQuery);
+</script>
+
+<script>
+    $(function () {
+        $.ajax({
+            url: '/api/papers/companies/{{company_id}}',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                $('#show_area').getContent(data);
+            }
+        })
+
+    });
+</script>
+</body>
+</html>
