@@ -7,6 +7,7 @@
 <style type="text/css">
 .bg{background:url(/static/img/pic.png) no-repeat center fixed;background-size:contain}
 #kuang{border:1px solid #F0F0F0}
+#company-logo{width: 187px; height: 78px;}
 </style>
 
 </head>
@@ -85,7 +86,7 @@ $.fn.getContent=function(content)
 		{
 			contentL +='</div> </li> <li class="item"> <div class="row clearfix">';
 		}
-		contentL +='<div class="col-md-4 column"> <h2>'+ company_name + '</h2> <p>'+ content.items[index].paper_name + '</p> <img  src="' + company_pic + '"  /> <p> <a class="btn" href="/papers/' + content.items[index].paper_id +'">开始做题 »</a> </p> </div>';
+		contentL +='<div class="col-md-4 column"> <h2>'+ company_name + '</h2> <p>'+ content.items[index].paper_name + '</p> <img  id="company-logo" src="' + company_pic + '"  /> <p> <a class="btn" href="/papers/' + content.items[index].paper_id +'">开始做题 »</a> </p> </div>';
 		if(index == Num-1)
 		{
 			contentL +='</div> </li></ul>';
